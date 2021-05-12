@@ -115,12 +115,12 @@ struct nvram_tuple router_defaults[] = {
 	{ "wl_phytypes", "", 0 },		/* List of supported wireless bands (e.g. "ga") */
 	{ "wl_radioids", "", 0 },		/* List of radio IDs */
 #endif
-#if defined (EA6900) || defined (R7000) || defined (WS880)
+#if defined (EA6900) || defined (R6300V2) || defined (R7000) || defined (WS880)
 #ifdef EA6900
 	{ "wl_ssid", "LINKSYS", 0 },		/* Service set ID (network name) */
 	{ "wl1_ssid", "LINKSYS_5G", 0 },	/* Service set ID (network name) */
 #endif
-#ifdef R7000
+#if defined (R6300V2) || defined (R7000)
 	{ "wl_ssid", "NETGEAR", 0 },		/* Service set ID (network name) */
 	{ "wl1_ssid", "NETGEAR_5G", 0 },	/* Service set ID (network name) */
 #endif
@@ -545,7 +545,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "wl_lanaccess", "off", 0 },
 	{ "wl_expire", "0", 0 },
 	{ "wl_mbss", "", 0 },
-#if defined (EA6900) || defined (R7000) || defined (WS880)
+#if defined (EA6900) || defined (R6300V2) || defined (R7000) || defined (WS880)
 	{ "wl_txpower",	"50", 0 },
 #else
 	{ "wl_txpower",	"100", 0 },
@@ -5078,7 +5078,7 @@ struct nvram_tuple bcm4360ac_defaults[] = {
 	{0, 0, 0 }
 };
 #else
-#if defined (EA6900) || defined (R7000) || defined (WS880)
+#if defined (EA6900) || defined (R6300V2) || defined (R7000) || defined (WS880)
 #ifdef EA6900
 struct nvram_tuple bcm4360ac_defaults[] = {
 	{ "0:ccode", "#a", 0 },
@@ -5088,7 +5088,7 @@ struct nvram_tuple bcm4360ac_defaults[] = {
 	{ 0, 0, 0 }
 };
 #endif
-#ifdef R7000
+#if defined (R6300V2) || defined (R7000)
 struct nvram_tuple bcm4360ac_defaults[] = {
 	{ "devpath0", "pci/1/1", 0 },
 	{ "0:aa2g", "7", 0 },

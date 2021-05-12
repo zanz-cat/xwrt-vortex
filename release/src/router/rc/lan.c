@@ -447,7 +447,7 @@ void start_wl(void)
 		nvram_set("led_5g", "0");
 		led_control(LED_5G, LED_OFF);
 	}
-#if defined(R7000) || defined(WS880)
+#if defined(R7000) || defined(R6300V2) || defined(WS880)
 	if (nvram_match("wl0_radio", "1"))
 	{
 #ifdef RTCONFIG_LED_BTN
@@ -2133,7 +2133,7 @@ gmac3_no_swbr:
 	nvram_set("led_5g", "0");
 	led_control(LED_5G, LED_OFF);
 #endif
-#if defined(R7000) || defined(WS880)
+#if defined(R7000) || defined(R6300V2) || defined(WS880)
 	led_control(LED_2G, LED_OFF);
 #endif
 #endif
@@ -3211,7 +3211,7 @@ gmac3_no_swbr:
 	nvram_set("led_5g", "0");
 	led_control(LED_5G, LED_OFF);
 #endif
-#if defined(R7000) || defined(WS880)
+#if defined(R7000) || defined(R6300V2) || defined(WS880)
 	led_control(LED_2G, LED_OFF);
 #endif
 #endif
@@ -3615,7 +3615,7 @@ void restart_wl(void)
 		nvram_set("led_5g", "0");
 		led_control(LED_5G, LED_OFF);
 	}
-#if defined(R7000) || defined(WS880)
+#if defined(R7000) || defined(R6300V2) || defined(WS880)
 	if (nvram_match("wl0_radio", "1"))
 	{
 #ifdef RTCONFIG_LED_BTN

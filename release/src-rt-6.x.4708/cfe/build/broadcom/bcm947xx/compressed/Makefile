@@ -136,6 +136,10 @@ ifeq ($(EA6900), 1)
 		fi ; \
 	fi
 endif
+ifeq ($(R6300V2), 1)
+	../../../../../ctools/nvserial -i cfez.bin -o cfe_r6300v2.bin -s 32 r6300v2_nvram.txt
+	cp cfe_r6300v2.bin ../../../..
+endif
 ifeq ($(R7000), 1)
 	../../../../../ctools/nvserial -i cfez.bin -o cfe_r7000.bin -s 32 r7000_nvram.txt
 	cp cfe_r7000.bin ../../../..
@@ -162,6 +166,11 @@ ifeq ($(RTN18U), 1)
 	@if [ "$(CFEZ_MAXSIZE)" != "" ]; then \
 		if [ "`wc -c < cfe_r7000.bin`" -gt "$(CFEZ_MAXSIZE)" ]; then \
 			echo "*** ERROR *** : cfe_r7000.bin bootrom image size: `wc -c < cfe_r7000.bin` exceeds limit: $(CFEZ_MAXSIZE)"; \
+		fi ; \
+	fi
+	@if [ "$(CFEZ_MAXSIZE)" != "" ]; then \
+		if [ "`wc -c < cfe_r6300v2.bin`" -gt "$(CFEZ_MAXSIZE)" ]; then \
+			echo "*** ERROR *** : cfe_r6300v2.bin bootrom image size: `wc -c < cfe_r6300v2.bin` exceeds limit: $(CFEZ_MAXSIZE)"; \
 		fi ; \
 	fi
 endif

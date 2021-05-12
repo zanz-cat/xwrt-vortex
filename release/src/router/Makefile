@@ -637,7 +637,7 @@ obj-$(RTCONFIG_FBWIFI) += httpd_uam
 
 #add for snmpd
 SNMPD_CFLAGS += -D$(BUILD_NAME)
-ifeq ($(BUILD_NAME), $(filter $(BUILD_NAME), RT-N66U RT-AC66U RT-AC68U EA6900 R7000 WS880))
+ifeq ($(BUILD_NAME), $(filter $(BUILD_NAME), RT-N66U RT-AC66U RT-AC68U EA6900 R6300V2 R7000 WS880))
 SNMPD_CFLAGS += -DDUAL_BAND
 endif
 obj-$(RTCONFIG_SNMPD) += openssl
@@ -1553,10 +1553,11 @@ www-install:
 	@$(MAKE) -C www install INSTALLDIR=$(INSTALLDIR)/www TOMATO_EXPERIMENTAL=$(TOMATO_EXPERIMENTAL)
 
 ifeq ($(RTCONFIG_OPENVPN),y)
-OPENSSL_CIPHERS:=enable-rc5 no-rc4
+OPENSSL_CIPHERS:=enable-rc5
 else
 #OPENSSL_CIPHERS:=no-dh no-idea no-rc2 no-rc5 no-aes no-aes192 no-cast no-des no-modes no-tls1 no-tlsext
-OPENSSL_CIPHERS:=no-rc4
+#OPENSSL_CIPHERS:=no-rc4
+OPENSSL_CIPHERS:=
 endif
 
 #OPENSSL_CIPHERS:=enable-aes enable-tls1 enable-tlsext
@@ -3185,6 +3186,7 @@ minidlna-configure:
 		$(if $(RTN65U,y),-DRTN56U=1) $(if $(or $(RTN66U), $(RTAC66U)),-DRTN66U=1)" \
 		$(if $(RTAC68U,y),-I$(SRCBASE)/include) \
 		$(if $(EA6900,y),-I$(SRCBASE)/include) \
+		$(if $(R6300V2,y),-I$(SRCBASE)/include) \
 		$(if $(R7000,y),-I$(SRCBASE)/include) \
 		$(if $(WS880,y),-I$(SRCBASE)/include) \
 	CPPFLAGS="-I$(TOP)/zlib \
@@ -3201,6 +3203,7 @@ minidlna-configure:
 		-L$(TOP)/libid3tag/.libs" \
 		$(if $(RTAC68U,y),-L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/shared -lshared) \
 		$(if $(EA6900,y),-L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/shared -lshared) \
+		$(if $(R6300V2,y),-L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/shared -lshared) \
 		$(if $(R7000,y),-L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/shared -lshared) \
 		$(if $(WS880,y),-L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/shared -lshared) \
 	ac_cv_header_linux_netlink_h=no \

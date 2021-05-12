@@ -351,6 +351,9 @@ enum {
 #ifdef EA6900
 	MODEL_EA6900,
 #endif
+#ifdef R6300V2
+	MODEL_R6300V2,
+#endif
 #ifdef R7000
 	MODEL_R7000,
 #endif
@@ -377,6 +380,9 @@ enum {
 	MODEL_RTAC1200GP,
 #if !defined (EA6900)
 	MODEL_EA6900,
+#endif
+#if !defined (R6300V2)
+	MODEL_R6300V2,
 #endif
 #if !defined (R7000)
 	MODEL_R7000,
@@ -616,6 +622,7 @@ static inline int have_usb3_led(int model)
 		case MODEL_RTAC56U:
 		case MODEL_RTAC56S:
 		case MODEL_RTAC68U:
+		case MODEL_R6300V2:
 		case MODEL_R7000:
 		case MODEL_WS880:
 #ifndef RTCONFIG_ETRON_XHCI_USB3_LED
@@ -1426,7 +1433,7 @@ static inline int is_m2ssd_port(char *usb_node) { return 0; }
 
 #ifdef RTCONFIG_BCM5301X_TRAFFIC_MONITOR
 
-#if defined(RTN18U) || defined(RTAC56U) || defined(RTAC56S) || defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(WS880) || defined(RTAC3200) || defined(DSL_AC68U)
+#if defined(RTN18U) || defined(RTAC56U) || defined(RTAC56S) || defined(RTAC68U) || defined(EA6900) || defined(R6300V2) || defined(R7000) || defined(WS880) || defined(RTAC3200) || defined(DSL_AC68U)
 #define WAN0DEV "vlan2"
 #endif
 

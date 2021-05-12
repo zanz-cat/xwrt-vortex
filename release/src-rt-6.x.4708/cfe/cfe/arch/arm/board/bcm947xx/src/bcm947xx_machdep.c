@@ -44,7 +44,7 @@ extern int cpu_turbo_mode;
 #define WPS_BTN_GPIO	(1 << 7)	// GPIO 7
 #endif
 
-#ifdef R7000
+#if defined (R6300V2) || defined (R7000)
 /* define R7000 GPIO */
 #define	PWR_WH_LED_GPIO	(1 << 2)	// GPIO 2
 #define	PWR_OR_LED_GPIO	(1 << 3)	// GPIO 3
@@ -126,7 +126,7 @@ board_pinmux_init(si_t *sih)
 	si_gpioout(sih, USB1_PWR_GPIO, USB1_PWR_GPIO, GPIO_DRV_PRIORITY);
 	si_gpioout(sih, USB2_PWR_GPIO, USB2_PWR_GPIO, GPIO_DRV_PRIORITY);
 #endif
-#ifdef R7000
+#if defined (R6300V2) || defined (R7000)
 	si_gpiocontrol(sih, PWR_WH_LED_GPIO, 0, GPIO_DRV_PRIORITY);
 	si_gpiocontrol(sih, PWR_OR_LED_GPIO, 0, GPIO_DRV_PRIORITY);
 	si_gpiocontrol(sih, WAN_OR_LED_GPIO, 0, GPIO_DRV_PRIORITY);

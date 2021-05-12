@@ -216,7 +216,28 @@ function show_etherstate(){
 					port = "4";	// This is LAN 4 (RTL) from QTN
 					devicename = '<span class="ClientName">&lt;unknown&gt;</span>';
 				}
+			} else if (based_modelid == "R6300V2") {
+				if (port == "4") {
+					port = "0";
+				}
+				else {
+					port = 4 - port;
+				}
+			} else if (based_modelid == "EA6700" || based_modelid == "EA6400" || based_modelid == "EA6200") {
+				if (port == "5") { //CPU port
+					continue;
+				} else if (port == "4") {
+					port = "0";
+				} else {
+					port++;
+				}
+			} else if (based_modelid == "EA6900") {
+				if (port == "5") //CPU port
+					continue;
+			} else {
+				//
 			}
+			
 			if (port == "0") {
 				wan_array = [ "WAN", (line[7] & 0xFFF), state2, devicename];
 				continue;

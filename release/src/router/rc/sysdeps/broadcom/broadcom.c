@@ -283,7 +283,10 @@ GetPhyStatus(int verbose)
 		/* WAN L1 L2 L3 L4 */
 		ports[0]=0; ports[1]=5; ports[2]=3; ports[3]=2; ports[4]=1;
 		break;
-
+	case MODEL_R6300V2:
+		/* WAN L1 L2 L3 L4 */
+		ports[0]=4; ports[1]=3; ports[2]=2; ports[3]=1; ports[4]=0;
+		break;
 	case MODEL_DSLAC68U:
 	case MODEL_RPAC68U:
 	case MODEL_RTAC68U:
@@ -561,6 +564,7 @@ setAllLedOn(void)
 			break;
 		}
 		case MODEL_R7000:
+		case MODEL_R6300V2:
 		{
 			led_control(LED_USB, LED_ON);
 			led_control(LED_USB3, LED_ON);
@@ -969,6 +973,7 @@ setAllLedOff(void)
 			break;
 		}
 		case MODEL_R7000:
+		case MODEL_R6300V2:		
 		{
 			led_control(LED_USB, LED_OFF);
 			led_control(LED_USB3, LED_OFF);
@@ -1168,6 +1173,7 @@ setATEModeLedOn(void) {
 			break;
 		}
 		case MODEL_R7000:
+		case MODEL_R6300V2:	
 		{
 			led_control(LED_USB, LED_ON);
 			led_control(LED_USB3, LED_ON);

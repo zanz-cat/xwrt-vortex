@@ -55,6 +55,10 @@
 #define MODEL_PROTECT "R7000"
 #endif
 
+#if defined(R6300V2)
+#define MODEL_PROTECT "R6300V2"
+#endif
+
 #if defined(WS880)
 #define MODEL_PROTECT "WS880"
 #endif
@@ -139,7 +143,7 @@ int dualwan_control(int argc, char *argv[])
 	char wan0_proto[10];
 	char wan1_proto[10];
 
-#if !defined(EA6900) && !defined(R7000) && !defined(WS880)
+#if !defined(EA6900) && !defined(R7000) && !defined(R6300V2) && !defined(WS880)
 #if defined(RTCONFIG_CFEZ) && defined(RTCONFIG_BCMARM)
 	if (strcmp(nvram_safe_get("model"), MODEL_PROTECT) != 0){
 #else

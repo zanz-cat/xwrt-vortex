@@ -56,6 +56,9 @@ static const struct model_s model_list[] = {
 #ifdef EA6900
 	{ "EA6900",	MODEL_EA6900	},
 #endif
+#ifdef R6300V2
+	{ "R6300V2", MODEL_R6300V2 },
+#endif
 #ifdef R7000
 	{ "R7000",	MODEL_R7000	},
 #endif
@@ -97,6 +100,9 @@ static const struct model_s model_list[] = {
 	{ "RT-AC1200G+", MODEL_RTAC1200GP},
 #if !defined (EA6900)
 	{ "EA6900",	MODEL_EA6900	},
+#endif
+#if !defined (R6300V2)
+	{ "R6300V2", MODEL_R6300V2 },
 #endif
 #if !defined (R7000)
 	{ "R7000",	MODEL_R7000	},
@@ -179,6 +185,9 @@ int get_model(void)
 
 #ifdef EA6900
 	return MODEL_EA6900;
+#endif
+#ifdef R6300V2
+	return MODEL_R6300V2;
 #endif
 #ifdef R7000
 	return MODEL_R7000;

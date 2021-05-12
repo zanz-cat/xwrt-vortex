@@ -74,7 +74,7 @@
 #ifdef MS_IPK
 #include <sys/stat.h>
 #else
-#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(WS880)
+#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(R6300V2) || defined(WS880)
 #include <shared.h>
 #include <bcmnvram.h>
 #endif
@@ -1105,7 +1105,7 @@ retry:
 #define PATH_ICON_PNG_LRG	"/rom/dlna/icon_lrg.png"
 #define PATH_ICON_JPEG_SM	"/rom/dlna/icon_sm.jpg"
 #define PATH_ICON_JPEG_LRG	"/rom/dlna/icon_lrg.jpg"
-#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(WS880)
+#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(R6300V2) || defined(WS880)
 #define PATH_ICON_ALT_PNG_SM	"/rom/dlna/icon_alt_sm.png"
 #define PATH_ICON_ALT_PNG_LRG	"/rom/dlna/icon_alt_lrg.png"
 #define PATH_ICON_ALT_JPEG_SM	"/rom/dlna/icon_alt_sm.jpg"
@@ -1131,7 +1131,7 @@ init_icon(const char *iconfile)
 	int ret = 0;
 
 	if (strcmp(iconfile, PATH_ICON_PNG_SM) == 0
-#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(WS880)
+#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(R6300V2) || defined(WS880)
 		|| strcmp(iconfile, PATH_ICON_ALT_PNG_SM) == 0
 #endif
 	)
@@ -1140,7 +1140,7 @@ init_icon(const char *iconfile)
 		size = &size_png_sm;
 	}
 	else if (strcmp(iconfile, PATH_ICON_PNG_LRG) == 0
-#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(WS880)
+#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(R6300V2) || defined(WS880)
 		|| strcmp(iconfile, PATH_ICON_ALT_PNG_LRG) == 0
 #endif
 	)
@@ -1149,7 +1149,7 @@ init_icon(const char *iconfile)
 		size = &size_png_lrg;
 	}
 	else if (strcmp(iconfile, PATH_ICON_JPEG_SM) == 0
-#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(WS880)
+#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(R6300V2) || defined(WS880)
 		|| strcmp(iconfile, PATH_ICON_ALT_JPEG_SM) == 0
 #endif
 	)
@@ -1158,7 +1158,7 @@ init_icon(const char *iconfile)
 		size = &size_jpeg_sm;
 	}
 	else if (strcmp(iconfile, PATH_ICON_JPEG_LRG) == 0
-#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(WS880)
+#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(R6300V2) || defined(WS880)
 		|| strcmp(iconfile, PATH_ICON_ALT_JPEG_LRG) == 0
 #endif
 	)
@@ -1269,7 +1269,7 @@ main(int argc, char **argv)
 
 #ifndef MS_IPK
 #if (!defined(RTN66U) && !defined(RTN56U))
-#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(WS880)
+#if defined(RTAC68U) || defined(EA6900) || defined(R7000) || defined(R6300V2) || defined(WS880)
 	if (is_ac66u_v2_series()) {
 		init_icon(PATH_ICON_ALT_PNG_SM);
 		init_icon(PATH_ICON_ALT_PNG_LRG);

@@ -287,6 +287,7 @@ void erase_nvram(void)
 		case MODEL_RTAC68U:
 		case MODEL_EA6900:
 		case MODEL_R7000:
+		case MODEL_R6300V2:
 		case MODEL_WS880:
 		case MODEL_DSLAC68U:
 		case MODEL_RTAC87U:
@@ -314,6 +315,7 @@ int init_toggle(void)
 		case MODEL_RTAC68U:
 		case MODEL_EA6900:
 		case MODEL_R7000:
+		case MODEL_R6300V2:
 		case MODEL_WS880:
 		case MODEL_DSLAC68U:
 		case MODEL_RTAC87U:
@@ -2147,7 +2149,7 @@ void fake_wl_led_2g(void)
 }
 #endif	/* RTCONFIG_WLAN_LED */
 
-#if defined(RTCONFIG_BRCM_USBAP) || defined(RTAC66U) || defined(BCM4352) || defined(R7000) || defined(WS880)
+#if defined(RTCONFIG_BRCM_USBAP) || defined(RTAC66U) || defined(BCM4352) || defined(R7000) || defined(R6300V2) || defined(WS880)
 unsigned long get_5g_count()
 {
 	FILE *f;
@@ -2204,11 +2206,11 @@ void fake_wl_led_5g(void)
 	}
 
 	if (blink_5g) {
-#if defined(RTAC66U) || defined(BCM4352) || defined(R7000) || defined(WS880)
+#if defined(RTAC66U) || defined(BCM4352) || defined(R7000) || defined(R6300V2) || defined(WS880)
 		j = rand_seed_by_time() % 3;
 #endif
 		for(i=0;i<10;i++) {
-#if defined(RTAC66U) || defined(BCM4352) || defined(R7000) || defined(WS880)
+#if defined(RTAC66U) || defined(BCM4352) || defined(R7000) || defined(R6300V2) || defined(WS880)
 			usleep(33*1000);
 
 			status_old = status;
@@ -2260,7 +2262,7 @@ int confirm_led()
 {
 	if (
 		1
-#if defined(RTN53) || defined(RTN18U) || defined(R7000) || defined(WS880)
+#if defined(RTN53) || defined(RTN18U) || defined(R7000) || defined(R6300V2) || defined(WS880)
 		&& led_gpio_table[LED_2G] != 0xff
 		&& led_gpio_table[LED_2G] != -1
 #endif
@@ -2280,7 +2282,7 @@ int confirm_led()
 		&& led_gpio_table[LED_MMC] != 0xff
 		&& led_gpio_table[LED_MMC] != -1
 #endif
-#if defined(RTCONFIG_BRCM_USBAP) || defined(RTAC66U) || defined(BCM4352) || defined(R7000) || defined(WS880)
+#if defined(RTCONFIG_BRCM_USBAP) || defined(RTAC66U) || defined(BCM4352) || defined(R7000) || defined(R6300V2) || defined(WS880)
 		&& led_gpio_table[LED_5G] != 0xff
 		&& led_gpio_table[LED_5G] != -1
 #endif
@@ -3809,7 +3811,7 @@ void watchdog(int sig)
 	period_chk_cnt();
 #endif
 	/* handle button */
-#if defined(EA6900) || defined(R7000) || defined(WS880)
+#if defined(EA6900) || defined(R7000) || defined(R6300V2) || defined(WS880)
 	btn_check_vtx();
 #else
 	btn_check();
@@ -4109,7 +4111,7 @@ int sw_devled_main(int argc, char *argv[])
 	swled_alloff_counts = nvram_get_int("offc");
 
 	/* set the signal handler */
-#if defined(EA6900) || defined(R7000) || defined(WS880)
+#if defined(EA6900) || defined(R7000) || defined(R6300V2) || defined(WS880)
 	signal(SIGALRM, led_check_vtx);
 #else
 	signal(SIGALRM, led_check);

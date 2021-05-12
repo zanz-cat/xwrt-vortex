@@ -64,7 +64,7 @@ extern void GPIO_INIT(void);
 #define WPS_BTN_GPIO	(1 << 7)	// GPIO 7
 #endif
 
-#ifdef R7000
+#if defined (R6300V2) || defined (R7000)
 /* define R7000 GPIO */
 #define	PWR_WH_LED_GPIO	(1 << 2)	// GPIO 2
 #define	PWR_OR_LED_GPIO	(1 << 3)	// GPIO 3
@@ -347,7 +347,7 @@ extern void LEDON(void)
 	si_gpioout(sih, LOGO_LED1_GPIO, LOGO_LED1_GPIO, GPIO_DRV_PRIORITY);
 	si_gpioout(sih, LOGO_LED2_GPIO, LOGO_LED2_GPIO, GPIO_DRV_PRIORITY);
 #endif
-#ifdef R7000
+#if defined (R6300V2) || defined (R7000)
 	si_gpioouten(sih, PWR_OR_LED_GPIO, PWR_OR_LED_GPIO, GPIO_DRV_PRIORITY);
 	si_gpioout(sih, PWR_OR_LED_GPIO, PWR_OR_LED_GPIO, GPIO_DRV_PRIORITY);
 #endif
@@ -367,7 +367,7 @@ extern void LEDOFF(void)
 	si_gpioout(sih, LOGO_LED1_GPIO, LOGO_LED1_GPIO, GPIO_DRV_PRIORITY);
 	si_gpioout(sih, LOGO_LED2_GPIO, 0, GPIO_DRV_PRIORITY);
 #endif
-#ifdef R7000
+#if defined (R6300V2) || defined (R7000)
 	si_gpioouten(sih, PWR_OR_LED_GPIO, PWR_OR_LED_GPIO, GPIO_DRV_PRIORITY);
 	si_gpioout(sih, PWR_OR_LED_GPIO, 0, GPIO_DRV_PRIORITY);
 #endif
@@ -387,7 +387,7 @@ extern void GPIO_INIT(void)
 	si_gpioouten(sih, LOGO_LED1_GPIO, 0, GPIO_DRV_PRIORITY);
 	si_gpioouten(sih, LOGO_LED2_GPIO, 0, GPIO_DRV_PRIORITY);
 #endif
-#ifdef R7000
+#if defined (R6300V2) || defined (R7000)
 	si_gpiocontrol(sih, PWR_OR_LED_GPIO, 0, GPIO_DRV_PRIORITY);
 	si_gpioouten(sih, PWR_OR_LED_GPIO, 0, GPIO_DRV_PRIORITY);
 #endif

@@ -201,6 +201,7 @@ _dprintf("%s: Start to run...\n", __FUNCTION__);
 
 	while (1) {
 		ret = wlcconnect_core();
+		_dprintf("wlcconnect_core return %d\n", ret);
 		if (ret == WLC_STATE_CONNECTED) nvram_set_int("wlc_state", WLC_STATE_CONNECTED);
 		else if (ret == WLC_STATE_CONNECTING) {
 			nvram_set_int("wlc_state", WLC_STATE_STOPPED);

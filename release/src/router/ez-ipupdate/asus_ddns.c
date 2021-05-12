@@ -675,6 +675,7 @@ int asus_private(void)
 	}
 	if ((get_model() == MODEL_EA6900) ||
 	    (get_model() == MODEL_R7000) ||
+	    (get_model() == MODEL_R6300V2) ||
 	    (get_model() == MODEL_WS880)) {
 		hwaddr[0] = 0x74;
 		hwaddr[1] = 0xD0;

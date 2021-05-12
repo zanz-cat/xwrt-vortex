@@ -413,7 +413,7 @@ function isSupport(_ptn){
 
 		if((based_modelid == "RT-AC3200" || based_modelid == "RT-AC87U" || based_modelid == "RT-AC88U" || based_modelid == "RT-AC86U" || 
 			based_modelid == "AC2900" || based_modelid == "RT-AC3100" || based_modelid == "RT-AC5300" || based_modelid == "GT-AC5300" || 
-			based_modelid == "DSL-AC68U" || based_modelid == "RT-AC68U" || based_modelid == "EA6900" || based_modelid == "R7000" || based_modelid == "WS880" || based_modelid == "4G-AC68U" || based_modelid == "RT-AC68R" || 
+			based_modelid == "DSL-AC68U" || based_modelid == "RT-AC68U" || based_modelid == "EA6900" || based_modelid == "R6300V2" || based_modelid == "R7000" || based_modelid == "WS880" || based_modelid == "4G-AC68U" || based_modelid == "RT-AC68R" || 
 			based_modelid == "RT-AC68W" || based_modelid == "RT-AC68RW" || based_modelid == "RT-AC1900P" || 
 			based_modelid == "RT-AC67U" || based_modelid == "RT-AC56U" || based_modelid == "RT-AC56R"  || based_modelid == "BRT-AC828")
 		){
@@ -555,7 +555,7 @@ var pm_support = isSupport("permission_management");
 if( based_modelid == "RT-AC5300" || based_modelid == "GT-AC5300" || based_modelid == "RT-AC3100" || based_modelid == "RT-AC88U" || based_modelid == "RT-AC86U" || based_modelid == "AC2900"
  || based_modelid == "RT-AC3200"
  || based_modelid == "RT-AC87U" || based_modelid == "RT-AC87R"
- || based_modelid == "RT-AC68U" || based_modelid == "EA6900" || based_modelid == "R7000" || based_modelid == "WS880" || based_modelid == "RT-AC68A" || based_modelid == "4G-AC68U" || based_modelid == "RT-AC68R" || based_modelid == "RT-AC68P" || based_modelid == "RT-AC68W"
+ || based_modelid == "RT-AC68U" || based_modelid == "EA6900" || based_modelid == "R6300V2" || based_modelid == "R7000" || based_modelid == "WS880" || based_modelid == "RT-AC68A" || based_modelid == "4G-AC68U" || based_modelid == "RT-AC68R" || based_modelid == "RT-AC68P" || based_modelid == "RT-AC68W"
  || based_modelid == "RT-AC66U" || based_modelid == "RT-AC66R"
  || based_modelid == "RT-AC56U"
  || based_modelid == "RT-N66U" || based_modelid == "RT-N66R" || based_modelid == "RT-N66W"){
@@ -1497,7 +1497,11 @@ function showMenuTree(menuList, menuExclude){
 	else if(document.getElementById("NM_table")){
 		if(usbPortMax == 3)	tableHeight = 1225;
 		if(tableHeight < 950) tableHeight = 950;
-		document.getElementById("NM_table").style.height = (tableHeight - 145) + "px";
+        if (cloudsync_support && bwdpi_support) {
+            document.getElementById("NM_table").style.height = (tableHeight - 145) + "px";
+        } else {
+            document.getElementById("NM_table").style.height = tableHeight + "px";
+        }
 	}
 
 	if(document.titleForm.preferred_lang.value == "JP"){

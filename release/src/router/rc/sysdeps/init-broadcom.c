@@ -722,7 +722,106 @@ void generate_switch_para(void)
 			break;
 		}
 
+		case MODEL_R6300V2:                                             /* 0  1  2  3  4 */
+		{	/* WAN L1 L2 L3 L4 CPU */	/*vision: WAN L1 L2 L3 L4 */
+			const int ports[SWPORT_COUNT] = { 4, 3, 2, 1, 0, 5 };
+			int wancfg = (!nvram_match("switch_wantag", "none")&&!nvram_match("switch_wantag", "")&&!nvram_match("switch_wantag", "hinet")) ? SWCFG_DEFAULT : cfg;
 
+			wan_phyid = ports[0];	// record the phy num of the wan port on the case
+#ifdef RTCONFIG_DUALWAN
+			if (cfg != SWCFG_BRIDGE) {
+				int wan1cfg = nvram_get_int("wans_lanport");
+
+				nvram_unset("vlan2ports");
+				nvram_unset("vlan2hwname");
+				nvram_unset("vlan3ports");
+				nvram_unset("vlan3hwname");
+
+				// The first WAN port.
+				if (get_wans_dualwan()&WANSCAP_WAN) {
+					switch_gen_config(wan, ports, wancfg, 1, (get_wans_dualwan()&WANSCAP_LAN && wan1cfg >= 1 && wan1cfg <= 4)?"":"u");
+					nvram_set("vlan2ports", wan);
+					nvram_set("vlan2hwname", "et0");
+				}
+
+				// The second WAN port.
+				if (get_wans_dualwan()&WANSCAP_LAN && wan1cfg >= 1 && wan1cfg <= 4) {
+					wan1cfg += WAN1PORT1-1;
+					if (wancfg != SWCFG_DEFAULT) {
+						gen_lan_ports(lan, ports, wancfg, wan1cfg, "*");
+						nvram_set("vlan1ports", lan);
+						gen_lan_ports(lan, ports, wancfg, wan1cfg, NULL);
+						nvram_set("lanports", lan);
+					}
+					else {
+						switch_gen_config(lan, ports, wan1cfg, 0, "*");
+						nvram_set("vlan1ports", lan);
+						switch_gen_config(lan, ports, wan1cfg, 0, NULL);
+						nvram_set("lanports", lan);
+					}
+
+					switch_gen_config(wan, ports, wan1cfg, 1, (get_wans_dualwan()&WANSCAP_WAN)?"":"u");
+					if (get_wans_dualwan()&WANSCAP_WAN) {
+						nvram_set("vlan3ports", wan);
+						nvram_set("vlan3hwname", "et0");
+					}
+					else {
+						nvram_set("vlan2ports", wan);
+						nvram_set("vlan2hwname", "et0");
+					}
+				}
+				else {
+					switch_gen_config(lan, ports, cfg, 0, "*");
+					nvram_set("vlan1ports", lan);
+					switch_gen_config(lan, ports, cfg, 0, NULL);
+					nvram_set("lanports", lan);
+				}
+
+				int unit;
+				char prefix[8], nvram_ports[16];
+
+				for (unit = WAN_UNIT_FIRST; unit < WAN_UNIT_MAX; ++unit) {
+					memset(prefix, 0, 8);
+					sprintf(prefix, "%d", unit);
+
+					memset(nvram_ports, 0, 16);
+					sprintf(nvram_ports, "wan%sports", (unit == WAN_UNIT_FIRST)?"":prefix);
+
+					if (get_dualwan_by_unit(unit) == WANS_DUALWAN_IF_WAN) {
+						switch_gen_config(wan, ports, wancfg, 1, NULL);
+						nvram_set(nvram_ports, wan);
+					}
+					else if (get_dualwan_by_unit(unit) == WANS_DUALWAN_IF_LAN) {
+						switch_gen_config(wan, ports, wan1cfg, 1, NULL);
+						nvram_set(nvram_ports, wan);
+					}
+					else
+						nvram_unset(nvram_ports);
+				}
+			}
+			else {
+				switch_gen_config(lan, ports, cfg, 0, "*");
+				switch_gen_config(wan, ports, wancfg, 1, "");
+				nvram_set("vlan1ports", lan);
+				nvram_set("vlan2ports", wan);
+				switch_gen_config(lan, ports, cfg, 0, NULL);
+				switch_gen_config(wan, ports, wancfg, 1, NULL);
+				nvram_set("lanports", lan);
+				nvram_set("wanports", wan);
+				nvram_unset("wan1ports");
+			}
+#else
+			switch_gen_config(lan, ports, cfg, 0, "*");
+			switch_gen_config(wan, ports, wancfg, 1, "u");
+			nvram_set("vlan1ports", lan);
+			nvram_set("vlan2ports", wan);
+			switch_gen_config(lan, ports, cfg, 0, NULL);
+			switch_gen_config(wan, ports, wancfg, 1, NULL);
+			nvram_set("lanports", lan);
+			nvram_set("wanports", wan);
+#endif
+			break;
+		}
 		case MODEL_RPAC68U:						/* 0  1  2  3  4 */
 		case MODEL_RTAC68U:						/* 0  1  2  3  4 */
 		case MODEL_EA6900:                                              /* 0  1  2  3  4 */
@@ -1557,6 +1656,7 @@ void ether_led()
 		eval("et", "robowr", "0", "0x12", "0x24");
 		break;
 	case MODEL_R7000:
+	case MODEL_R6300V2:
 		eval("et", "robowr", "0", "0x10", "0x3000");
 		eval("et", "robowr", "0", "0x12", "0x78");
 		eval("et", "robowr", "0", "0x14", "0x01");
@@ -1797,6 +1897,7 @@ reset_mssid_hwaddr(int unit)
 			case MODEL_RTAC68U:
 			case MODEL_EA6900:
 			case MODEL_R7000:
+			case MODEL_R6300V2:
 			case MODEL_WS880:
 			case MODEL_RTAC3200:
 			case MODEL_DSLAC68U:
@@ -2038,6 +2139,7 @@ void init_wl(void)
 		case MODEL_RTAC68U:
 		case MODEL_EA6900:
 		case MODEL_R7000:
+		case MODEL_R6300V2:
 		case MODEL_WS880:
 		case MODEL_RTAC88U:
 			set_bcm4360ac_vars();
@@ -2047,10 +2149,10 @@ void init_wl(void)
 #ifdef RTCONFIG_TCODE
 	check_wl_country();
 #endif
-#if defined(RTAC3200) || defined(RTAC68U) || defined (EA6900) || defined (R7000) || defined (WS880) || defined(RTAC5300) || defined(RTAC5300R) || defined(RTAC88U) || defined(RTAC3100)
+#if defined(RTAC3200) || defined(RTAC68U) || defined (EA6900) || defined (R7000) || defined (R6300V2) || defined (WS880) || defined(RTAC5300) || defined(RTAC5300R) || defined(RTAC88U) || defined(RTAC3100)
 	wl_disband5grp();
 #endif
-#if defined (EA6900) || defined (R7000) || defined (WS880)
+#if defined (EA6900) || defined (R7000) || defined (R6300V2) || defined (WS880)
 	set_wltxpower_vtx();
 #else
 	set_wltxpower();
@@ -2168,6 +2270,7 @@ void init_wl_compact(void)
 		case MODEL_RTAC68U:
 		case MODEL_EA6900:
 		case MODEL_R7000:
+		case MODEL_R6300V2:
 		case MODEL_WS880:
 		case MODEL_RTAC88U:
 			set_bcm4360ac_vars();
@@ -2193,16 +2296,17 @@ void init_wl_compact(void)
 		(model == MODEL_RTAC68U) ||
 		(model == MODEL_EA6900) ||
 		(model == MODEL_R7000) ||
+		(model == MODEL_R6300V2) ||
 		(model == MODEL_WS880) ||
 		(model == MODEL_RTAC87U) ||
 		(model == MODEL_RTAC88U) ||
 		(model == MODEL_RTN12HP_B1) ||
 		(model == MODEL_RTN18U) ||
 		(model == MODEL_RTN66U)) {
-#if defined(RTAC3200) || defined(RTAC68U) || defined (EA6900) || defined (R7000) || defined (WS880) || defined(RTAC5300) || defined(RTAC5300R)
+#if defined(RTAC3200) || defined(RTAC68U) || defined (EA6900) || defined (R7000) || defined (R6300V2) || defined (WS880) || defined(RTAC5300) || defined(RTAC5300R)
 		wl_disband5grp();
 #endif
-#if defined (EA6900) || defined (R7000) || defined (WS880)
+#if defined (EA6900) || defined (R7000) || defined (R6300V2) || defined (WS880)
 		set_wltxpower_vtx();
 #else
 		set_wltxpower();
@@ -2251,6 +2355,7 @@ void fini_wl(void)
 		(model == MODEL_RTAC68U) ||
 		(model == MODEL_EA6900) ||
 		(model == MODEL_R7000) ||
+		(model == MODEL_R6300V2) ||
 		(model == MODEL_WS880) ||
 		(model == MODEL_RTAC87U) ||
 		(model == MODEL_RTAC88U) ||
@@ -2377,6 +2482,7 @@ void init_syspara(void)
 		case MODEL_RTAC68U:
 		case MODEL_EA6900:
 		case MODEL_R7000:
+		case MODEL_R6300V2:
 		case MODEL_WS880:
 		case MODEL_RTAC56S:
 		case MODEL_RTAC56U:
@@ -4431,6 +4537,7 @@ _dprintf("*** Multicast IPTV: config Singtel TR069 on wan port ***\n");
 	case MODEL_RTAC68U:	/* WAN L1 L2 L3 L4 CPU */
 	case MODEL_EA6900:      /* WAN L1 L2 L3 L4 CPU */
 	case MODEL_R7000:       /* WAN L1 L2 L3 L4 CPU */
+	case MODEL_R6300V2:     /* WAN L1 L2 L3 L4 CPU */
 	case MODEL_WS880:       /* WAN L1 L2 L3 L4 CPU */
 	case MODEL_RTN18U:	/* WAN L1 L2 L3 L4 CPU */
 		if (wan_vid) { /* config wan port */
@@ -6286,7 +6393,7 @@ unsigned int convert_vlan_entry(int tag_enable, int portset, char *tag_reg_val)
 	}
 	/* P0  P1 P2 P3 P4 */
 	/* WAN L1 L2 L3 L4 */
-	else if (model == MODEL_RTAC68U || model == MODEL_EA6900 || model == MODEL_R7000 || model == MODEL_WS880 || model == MODEL_RTN18U ||
+	else if (model == MODEL_RTAC68U || model == MODEL_EA6900 || model == MODEL_R7000 || model == MODEL_R6300V2 || model == MODEL_WS880 || model == MODEL_RTN18U ||
 		model == MODEL_RTN66U || model == MODEL_RTAC66U ||
 		model == MODEL_DSLAC68U) {
 		port_shift_bit[0] = 1;
@@ -6485,7 +6592,7 @@ void set_port_based_vlan_config(char *interface)
 				/* P0  P1 P2 P3 P4 P5 */
 				/* WAN L1 L2 L3 L4 CPU */
 				if (model == MODEL_RTN16 ||
-					model == MODEL_RTAC68U || model == MODEL_EA6900 || model == MODEL_R7000 || model == MODEL_WS880 || model == MODEL_RTN18U ||
+					model == MODEL_RTAC68U || model == MODEL_EA6900 || model == MODEL_R7000 || model == MODEL_R6300V2 || model == MODEL_WS880 || model == MODEL_RTN18U ||
 					model == MODEL_RTAC87U ||
 					model == MODEL_RTAC56S || model == MODEL_RTAC56U ||
 					model == MODEL_RTN66U || model == MODEL_RTAC66U ||
@@ -6498,7 +6605,7 @@ void set_port_based_vlan_config(char *interface)
 					int cpu_port = 0;*/
 
 					/* Decide cpu port by model */
-					if (model == MODEL_RTAC68U || model == MODEL_EA6900 || model == MODEL_R7000 || model == MODEL_WS880 || model == MODEL_RTN18U ||
+					if (model == MODEL_RTAC68U || model == MODEL_EA6900 || model == MODEL_R7000 || model == MODEL_R6300V2 || model == MODEL_WS880 || model == MODEL_RTN18U ||
 						model == MODEL_RTAC56S || model == MODEL_RTAC56U ||
 						model == MODEL_DSLAC68U)
 						cpu_port = 5;

@@ -216,7 +216,7 @@ ifeq ($(BUILD_NAME), RT-AC68U)
 	cp -rf dlna/icon_lrg.rt-ac66u_v2.jpg $(INSTALLDIR)/rom/dlna/icon_alt_lrg.jpg
 	cp -rf dlna/icon_lrg.rt-ac66u_v2.png $(INSTALLDIR)/rom/dlna/icon_alt_lrg.png
 endif
-ifeq ($(BUILD_NAME), EA6900 R7000 WS880)
+ifeq ($(BUILD_NAME), EA6900 R6300V2 R7000 WS880)
 	cp -rf dlna/icon_sm.xwrt.jpg $(INSTALLDIR)/rom/dlna/icon_alt_sm.jpg
 	cp -rf dlna/icon_sm.xwrt.png $(INSTALLDIR)/rom/dlna/icon_alt_sm.png
 	cp -rf dlna/icon_lrg.xwrt.jpg $(INSTALLDIR)/rom/dlna/icon_alt_lrg.jpg

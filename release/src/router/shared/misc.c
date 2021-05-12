@@ -1244,6 +1244,7 @@ void bcmvlan_models(int model, char *vlan)
 	case MODEL_RPAC68U:
 	case MODEL_RTAC68U:
 	case MODEL_EA6900:
+	case MODEL_R6300V2:
 	case MODEL_R7000:
 	case MODEL_WS880:
 	case MODEL_RTAC87U:
@@ -1294,7 +1295,12 @@ char *get_productid(void)
 // trololo
 int get0model(void)
 {
+#ifdef R6300V2
+	return MODEL_R6300V2;
+#endif
+#ifdef R7000
 	return MODEL_R7000; // R7000 has RT-AC68U id
+#endif
 }
 
 char *get0modelid(int model)

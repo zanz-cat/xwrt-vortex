@@ -54,6 +54,7 @@ Devices supported on the legacy branch (380.xx):
 
 XWRT-Vortex supported devices are:
  * Linksys EA6900
+ * Netgear R6300v2
  * Netgear R7000
  * Huawei WS880
 
